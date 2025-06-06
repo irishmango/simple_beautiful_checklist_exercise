@@ -3,13 +3,19 @@ import 'package:simple_beautiful_checklist_exercise/data/database_repository.dar
 import 'package:simple_beautiful_checklist_exercise/src/features/task_list/widgets/empty_content.dart';
 import 'package:simple_beautiful_checklist_exercise/src/features/task_list/widgets/item_list.dart';
 
+
 class ListScreen extends StatefulWidget {
   const ListScreen({
     super.key,
     required this.repository,
+    required this.toggleTheme,
+    required this.isDarkMode,
   });
 
   final DatabaseRepository repository;
+  final VoidCallback toggleTheme;
+  final bool isDarkMode;
+
 
   @override
   State<ListScreen> createState() => _ListScreenState();
@@ -19,10 +25,13 @@ class _ListScreenState extends State<ListScreen> {
   final List<String> _items = [];
   bool isLoading = true;
   final TextEditingController _controller = TextEditingController();
+  bool isDark = false;
+   
 
   @override
   void initState() {
     super.initState();
+    
     _updateList();
   }
 
@@ -38,6 +47,21 @@ class _ListScreenState extends State<ListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meine Checkliste'),
+        actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Switch(
+                  value: isDark,
+                  onChanged: (value) {
+                    setState(() {
+                      widget.toggleTheme();
+                      isDark = !isDark;
+                    });
+                    
+                  },
+                ),
+              ),
+            ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

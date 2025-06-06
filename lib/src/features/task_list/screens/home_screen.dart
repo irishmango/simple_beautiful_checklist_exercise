@@ -5,9 +5,16 @@ import 'package:simple_beautiful_checklist_exercise/src/features/statistics/scre
 import 'list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.repository});
+  const HomeScreen({
+    super.key,
+    required this.repository,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   final DatabaseRepository repository;
+  final VoidCallback toggleTheme;
+  final bool isDarkMode;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,13 +22,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedNavBarIndex = 0;
-  List<Widget> _navBarWidgets = [];
+  late List<Widget> _navBarWidgets;
 
   @override
   void initState() {
     super.initState();
     _navBarWidgets = [
-      ListScreen(repository: widget.repository),
+      ListScreen(
+        repository: widget.repository,
+        toggleTheme: widget.toggleTheme,
+        isDarkMode: widget.isDarkMode,
+      ),
       StatisticsScreen(repository: widget.repository),
     ];
   }
